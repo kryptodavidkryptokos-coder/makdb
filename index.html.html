@@ -13,6 +13,11 @@
         .fear-greed { background: linear-gradient(90deg, #f97316 0%, #fbbf24 50%, #84cc16 100%); }
         .neutral { background: linear-gradient(90deg, #fbbf24 0%, #84cc16 100%); }
         .greed-extreme { background: linear-gradient(90deg, #84cc16 0%, #10b981 100%); }
+        .pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white p-4">
@@ -20,7 +25,7 @@
     <!-- Header -->
     <div class="gradient-bg p-6 rounded-lg mb-6 text-center">
         <h1 class="text-3xl font-bold">🐝 myApiKrypto Dashboard</h1>
-        <p class="text-sm mt-2 opacity-90">v1.0.0 - Tréninková verze | Demo režim</p>
+        <p class="text-sm mt-2 opacity-90">v1.0.0 - GitHub Pages Edition | <span id="statusBadge" class="pulse">🔄 Načítám...</span></p>
         <p class="text-xs mt-1 opacity-75">Poslední aktualizace: <span id="updateTime"></span></p>
     </div>
 
@@ -28,10 +33,10 @@
     <div class="bg-gray-800 rounded-lg p-6 mb-6">
         <h2 class="text-xl font-bold mb-4">📊 FEAR & GREED INDEX</h2>
         <div class="text-center">
-            <div class="text-6xl font-bold mb-4" id="fearValue">71</div>
-            <div class="h-8 rounded-full mb-4 fear-greed"></div>
-            <div class="text-2xl font-semibold mb-2" id="fearLabel">Chamtivost</div>
-            <div class="text-gray-400" id="fearDesc">Drž pozice, neriskuj nové velké nákupy</div>
+            <div class="text-6xl font-bold mb-4" id="fearValue">--</div>
+            <div class="h-8 rounded-full mb-4" id="fearBar"></div>
+            <div class="text-2xl font-semibold mb-2" id="fearLabel">Načítám...</div>
+            <div class="text-gray-400" id="fearDesc">Čekám na data</div>
         </div>
         <div class="mt-4 text-xs text-gray-500 flex justify-between">
             <span>0 - Extrémní strach</span>
@@ -42,14 +47,11 @@
     <!-- Akční souhrn -->
     <div class="bg-gradient-to-r from-yellow-600 to-yellow-700 rounded-lg p-6 mb-6">
         <h2 class="text-xl font-bold mb-3">⚡ AKČNÍ SOUHRN PRO DNES</h2>
-        <div class="space-y-2">
+        <div class="space-y-2" id="actionSummary">
             <div class="flex items-center gap-2">
-                <span class="text-2xl">🟢</span>
-                <span class="font-semibold">DRŽÍ pozice</span>
+                <span class="text-2xl">⏳</span>
+                <span class="font-semibold">Načítám doporučení...</span>
             </div>
-            <div class="text-sm opacity-90">📊 Trh silný, ale opatrně - jsme v zóně chamtivosti</div>
-            <div class="text-sm opacity-90">💰 Nové nákupy: ČEKEJ na pokles (Fear pod 40)</div>
-            <div class="text-sm opacity-90">🎯 Sell signal: Fear Index > 80 nebo BTC pod MA200</div>
         </div>
     </div>
 
@@ -60,18 +62,18 @@
             <h3 class="text-lg font-bold mb-4">₿ BTC vs MA200</h3>
             <div class="bg-gray-900 rounded h-48 mb-4 flex items-center justify-center">
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-green-400">$121,939</div>
-                    <div class="text-sm text-gray-400 mt-2">TradingView graf zde</div>
+                    <div class="text-4xl font-bold text-green-400" id="btcPrice">--</div>
+                    <div class="text-sm text-gray-400 mt-2">24h: <span id="btcChange">--</span></div>
                 </div>
             </div>
             <div class="flex items-center justify-between">
                 <div>
                     <div class="text-sm text-gray-400">Status MA200</div>
-                    <div class="text-lg font-semibold text-green-400">✅ NAD MA200</div>
+                    <div class="text-lg font-semibold text-green-400" id="btcMA200">⏳ Počítám</div>
                 </div>
                 <div class="text-right">
                     <div class="text-sm text-gray-400">Trend</div>
-                    <div class="text-lg font-semibold text-green-400">Býčí</div>
+                    <div class="text-lg font-semibold text-green-400" id="btcTrend">--</div>
                 </div>
             </div>
         </div>
@@ -81,18 +83,18 @@
             <h3 class="text-lg font-bold mb-4">⟠ ETH vs MA200</h3>
             <div class="bg-gray-900 rounded h-48 mb-4 flex items-center justify-center">
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-green-400">$4,485</div>
-                    <div class="text-sm text-gray-400 mt-2">TradingView graf zde</div>
+                    <div class="text-4xl font-bold text-green-400" id="ethPrice">--</div>
+                    <div class="text-sm text-gray-400 mt-2">24h: <span id="ethChange">--</span></div>
                 </div>
             </div>
             <div class="flex items-center justify-between">
                 <div>
                     <div class="text-sm text-gray-400">Status MA200</div>
-                    <div class="text-lg font-semibold text-green-400">✅ NAD MA200</div>
+                    <div class="text-lg font-semibold text-green-400" id="ethMA200">⏳ Počítám</div>
                 </div>
                 <div class="text-right">
                     <div class="text-sm text-gray-400">Trend</div>
-                    <div class="text-lg font-semibold text-green-400">Býčí</div>
+                    <div class="text-lg font-semibold text-green-400" id="ethTrend">--</div>
                 </div>
             </div>
         </div>
@@ -100,9 +102,8 @@
 
     <!-- ETF Flows -->
     <div class="grid md:grid-cols-2 gap-6 mb-6">
-        <!-- BTC ETF -->
         <div class="bg-gray-800 rounded-lg p-6">
-            <h3 class="text-lg font-bold mb-4">💼 BTC ETF FLOWS (3 dny)</h3>
+            <h3 class="text-lg font-bold mb-4">💼 BTC ETF FLOWS</h3>
             <div class="text-center">
                 <div class="text-4xl font-bold text-green-400 mb-2">+$676M</div>
                 <div class="text-sm text-gray-400 mb-4">1.10.2025</div>
@@ -110,13 +111,11 @@
                     <span class="text-2xl">✅</span>
                     <span class="font-semibold">Instituce kupují</span>
                 </div>
-                <div class="text-xs text-gray-500 mt-3">BlackRock IBIT: +$405M</div>
             </div>
         </div>
 
-        <!-- ETH ETF -->
         <div class="bg-gray-800 rounded-lg p-6">
-            <h3 class="text-lg font-bold mb-4">💼 ETH ETF FLOWS (3 dny)</h3>
+            <h3 class="text-lg font-bold mb-4">💼 ETH ETF FLOWS</h3>
             <div class="text-center">
                 <div class="text-4xl font-bold text-green-400 mb-2">+$303M</div>
                 <div class="text-sm text-gray-400 mb-4">Říjen 2025</div>
@@ -124,7 +123,6 @@
                     <span class="text-2xl">✅</span>
                     <span class="font-semibold">Pozitivní tok</span>
                 </div>
-                <div class="text-xs text-gray-500 mt-3">Rekordní přílivy</div>
             </div>
         </div>
     </div>
@@ -133,12 +131,11 @@
     <div class="bg-gray-800 rounded-lg p-6 mb-6">
         <h3 class="text-lg font-bold mb-4">📈 ETH/BTC POMĚR</h3>
         <div class="text-center">
-            <div class="text-4xl font-bold mb-3" id="ethBtcRatio">0.0368</div>
+            <div class="text-4xl font-bold mb-3" id="ethBtcRatio">--</div>
             <div class="h-24 bg-gray-900 rounded mb-4 flex items-center justify-center">
-                <div class="text-sm text-gray-400">Mini trend graf</div>
+                <div class="text-sm text-gray-400">Poměr ETH/BTC</div>
             </div>
-            <div class="text-lg" id="ethBtcTrend">➡️ Vyvážený poměr</div>
-            <div class="text-xs text-gray-500 mt-2">Pokud roste → ETH silnější | Pokud klesá → BTC dominuje</div>
+            <div class="text-lg" id="ethBtcTrend">⏳ Počítám...</div>
         </div>
     </div>
 
@@ -146,11 +143,10 @@
     <div class="bg-gradient-to-br from-purple-900 to-purple-800 rounded-lg p-6">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold">💰 MOJE PORTFOLIO</h2>
-            <span class="bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold">DEMO REŽIM</span>
+            <span class="bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold">DEMO</span>
         </div>
         
         <div class="space-y-4">
-            <!-- BTC holding -->
             <div class="bg-black bg-opacity-30 rounded-lg p-4">
                 <div class="flex justify-between items-center mb-2">
                     <span class="font-semibold">₿ Bitcoin</span>
@@ -159,16 +155,15 @@
                 <div class="flex justify-between items-center">
                     <div>
                         <div class="text-sm text-gray-400">Nákup @ $121,939</div>
-                        <div class="text-lg font-bold text-gray-300" id="btcValue">3,500 Kč</div>
+                        <div class="text-lg font-bold text-gray-300" id="btcValue">-- Kč</div>
                     </div>
                     <div class="text-right">
-                        <div class="text-2xl font-bold" id="btcProfit">0.0%</div>
-                        <div class="text-sm text-gray-400" id="btcProfitCzk">0 Kč</div>
+                        <div class="text-2xl font-bold" id="btcProfit">--</div>
+                        <div class="text-sm text-gray-400" id="btcProfitCzk">--</div>
                     </div>
                 </div>
             </div>
 
-            <!-- ETH holding -->
             <div class="bg-black bg-opacity-30 rounded-lg p-4">
                 <div class="flex justify-between items-center mb-2">
                     <span class="font-semibold">⟠ Ethereum</span>
@@ -177,84 +172,173 @@
                 <div class="flex justify-between items-center">
                     <div>
                         <div class="text-sm text-gray-400">Nákup @ $4,485</div>
-                        <div class="text-lg font-bold text-gray-300" id="ethValue">1,500 Kč</div>
+                        <div class="text-lg font-bold text-gray-300" id="ethValue">-- Kč</div>
                     </div>
                     <div class="text-right">
-                        <div class="text-2xl font-bold" id="ethProfit">0.0%</div>
-                        <div class="text-sm text-gray-400" id="ethProfitCzk">0 Kč</div>
+                        <div class="text-2xl font-bold" id="ethProfit">--</div>
+                        <div class="text-sm text-gray-400" id="ethProfitCzk">--</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Total -->
             <div class="border-t border-gray-600 pt-4">
                 <div class="flex justify-between items-center">
                     <div>
-                        <div class="text-sm text-gray-400">Celková hodnota</div>
-                        <div class="text-2xl font-bold" id="totalValue">5,000 Kč</div>
+                        <div class="text-sm text-gray-400">Celkem</div>
+                        <div class="text-2xl font-bold" id="totalValue">-- Kč</div>
                     </div>
                     <div class="text-right">
-                        <div class="text-sm text-gray-400">Celkový zisk/ztráta</div>
-                        <div class="text-3xl font-bold" id="totalProfit">0.0%</div>
-                        <div class="text-lg" id="totalProfitCzk">0 Kč</div>
+                        <div class="text-sm text-gray-400">Zisk/Ztráta</div>
+                        <div class="text-3xl font-bold" id="totalProfit">--</div>
+                        <div class="text-lg" id="totalProfitCzk">--</div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="mt-4 text-xs text-gray-400 border-t border-gray-600 pt-3">
-            📝 <strong>DEMO verze:</strong> Portfolio se počítá od dnešních cen (5.10.2025). Po reálném nákupu aktualizuj hodnoty.
-        </div>
     </div>
 
-    <!-- Footer -->
     <div class="mt-6 text-center text-sm text-gray-500">
-        <p>🐝 Včelařský přístup k investování | Vytvořeno s Claude</p>
-        <p class="mt-2">Aktualizuj každé 2-3 dny | Nezapomeň na rodinu!</p>
+        <p>🐝 Včelařský dashboard | Auto-update z API</p>
     </div>
 
     <script>
-        // Aktualizace času
-        document.getElementById('updateTime').textContent = new Date().toLocaleString('cs-CZ');
-
-        // Portfolio výpočty (demo - od dnešních cen jsou zisky 0)
-        const EXCHANGE_RATE = 23; // Kč/USD
-        
-        // Demo portfolio
+        const EXCHANGE_RATE = 23;
         const portfolio = {
-            btc: {
-                amount: 0.00125,
-                buyPrice: 121939,
-                currentPrice: 121939
-            },
-            eth: {
-                amount: 0.0145,
-                buyPrice: 4485,
-                currentPrice: 4485
-            }
+            btc: { amount: 0.00125, buyPrice: 121939 },
+            eth: { amount: 0.0145, buyPrice: 4485 }
         };
+        let currentPrices = { btc: 0, eth: 0 };
 
-        // Funkce pro výpočet zisku
+        async function fetchFearGreed() {
+            try {
+                const response = await fetch('https://api.alternative.me/fng/');
+                const data = await response.json();
+                const fearValue = parseInt(data.data[0].value);
+                updateFearGreed(fearValue);
+                return fearValue;
+            } catch (error) {
+                console.warn('Fear & Greed offline, používám 71');
+                updateFearGreed(71);
+                return 71;
+            }
+        }
+
+        async function fetchPrices() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+                const data = await response.json();
+                
+                currentPrices.btc = data.bitcoin.usd;
+                currentPrices.eth = data.ethereum.usd;
+                
+                document.getElementById('btcPrice').textContent = `$${currentPrices.btc.toLocaleString()}`;
+                document.getElementById('ethPrice').textContent = `$${currentPrices.eth.toLocaleString()}`;
+                
+                const btcChange = data.bitcoin.usd_24h_change.toFixed(2);
+                const ethChange = data.ethereum.usd_24h_change.toFixed(2);
+                
+                document.getElementById('btcChange').textContent = `${btcChange >= 0 ? '+' : ''}${btcChange}%`;
+                document.getElementById('btcChange').className = btcChange >= 0 ? 'text-green-400' : 'text-red-400';
+                
+                document.getElementById('ethChange').textContent = `${ethChange >= 0 ? '+' : ''}${ethChange}%`;
+                document.getElementById('ethChange').className = ethChange >= 0 ? 'text-green-400' : 'text-red-400';
+                
+                updateMA200Status(currentPrices.btc, 'btc');
+                updateMA200Status(currentPrices.eth, 'eth');
+                updateEthBtcRatio();
+                calculateProfits();
+                
+            } catch (error) {
+                console.warn('CoinGecko offline, používám fallback');
+                currentPrices.btc = 121939;
+                currentPrices.eth = 4485;
+                document.getElementById('btcPrice').textContent = '$121,939';
+                document.getElementById('ethPrice').textContent = '$4,485';
+                updateMA200Status(currentPrices.btc, 'btc');
+                updateMA200Status(currentPrices.eth, 'eth');
+                updateEthBtcRatio();
+                calculateProfits();
+            }
+        }
+
+        function updateFearGreed(value) {
+            document.getElementById('fearValue').textContent = value;
+            let label, desc, color, barClass;
+            
+            if (value <= 25) {
+                label = 'Extrémní strach'; desc = '💚 KUPUJ!'; color = 'text-red-400'; barClass = 'fear-extreme';
+            } else if (value <= 45) {
+                label = 'Strach'; desc = '🟢 Dobrá příležitost'; color = 'text-orange-400'; barClass = 'fear-extreme';
+            } else if (value <= 55) {
+                label = 'Neutrál'; desc = '⏸️ Vyčkávej'; color = 'text-yellow-400'; barClass = 'neutral';
+            } else if (value <= 75) {
+                label = 'Chamtivost'; desc = '⚠️ Drž, neriskuj'; color = 'text-green-400'; barClass = 'fear-greed';
+            } else {
+                label = 'Extrémní chamtivost'; desc = '🚨 PRODEJ zisky!'; color = 'text-green-500'; barClass = 'greed-extreme';
+            }
+            
+            document.getElementById('fearLabel').textContent = label;
+            document.getElementById('fearLabel').className = 'text-2xl font-semibold mb-2 ' + color;
+            document.getElementById('fearDesc').textContent = desc;
+            document.getElementById('fearBar').className = 'h-8 rounded-full mb-4 ' + barClass;
+            updateActionSummary(value);
+        }
+
+        function updateActionSummary(fearValue) {
+            let details;
+            if (fearValue <= 30) {
+                details = '<div class="flex items-center gap-2"><span class="text-2xl">🟢</span><span class="font-semibold">NAKUPUJ</span></div><div class="text-sm opacity-90">📊 Extrémní strach = akumulace</div><div class="text-sm opacity-90">💰 Alokuj 10-20% (DCA)</div>';
+            } else if (fearValue <= 55) {
+                details = '<div class="flex items-center gap-2"><span class="text-2xl">🟡</span><span class="font-semibold">DRŽÍ & ČEKEJ</span></div><div class="text-sm opacity-90">📊 Neutrální trh</div>';
+            } else if (fearValue <= 75) {
+                details = '<div class="flex items-center gap-2"><span class="text-2xl">⚠️</span><span class="font-semibold">DRŽÍ - Opatrně</span></div><div class="text-sm opacity-90">📊 Chamtivost roste</div><div class="text-sm opacity-90">💰 ŽÁDNÉ nákupy</div>';
+            } else {
+                details = '<div class="flex items-center gap-2"><span class="text-2xl">🚨</span><span class="font-semibold">PRODEJ zisky!</span></div><div class="text-sm opacity-90">📊 Extrém = vrchol</div><div class="text-sm opacity-90">💰 Realizuj 30-50%</div>';
+            }
+            document.getElementById('actionSummary').innerHTML = details;
+        }
+
+        function updateMA200Status(currentPrice, coin) {
+            const ma200 = coin === 'btc' ? 95000 : 3500;
+            const isAbove = currentPrice > ma200;
+            const statusEl = document.getElementById(`${coin}MA200`);
+            const trendEl = document.getElementById(`${coin}Trend`);
+            
+            if (isAbove) {
+                statusEl.innerHTML = '✅ NAD MA200';
+                statusEl.className = 'text-lg font-semibold text-green-400';
+                trendEl.textContent = 'Býčí';
+                trendEl.className = 'text-lg font-semibold text-green-400';
+            } else {
+                statusEl.innerHTML = '❌ POD MA200';
+                statusEl.className = 'text-lg font-semibold text-red-400';
+                trendEl.textContent = 'Medvědí';
+                trendEl.className = 'text-lg font-semibold text-red-400';
+            }
+        }
+
+        function updateEthBtcRatio() {
+            const ratio = (currentPrices.eth / currentPrices.btc).toFixed(4);
+            document.getElementById('ethBtcRatio').textContent = ratio;
+            document.getElementById('ethBtcTrend').textContent = ratio > 0.037 ? '➡️ ETH roste rychleji' : '⬅️ BTC dominuje';
+        }
+
         function calculateProfits() {
-            // BTC
-            const btcValue = portfolio.btc.amount * portfolio.btc.currentPrice * EXCHANGE_RATE;
+            const btcValue = portfolio.btc.amount * currentPrices.btc * EXCHANGE_RATE;
             const btcBuyValue = portfolio.btc.amount * portfolio.btc.buyPrice * EXCHANGE_RATE;
-            const btcProfit = ((portfolio.btc.currentPrice - portfolio.btc.buyPrice) / portfolio.btc.buyPrice * 100).toFixed(2);
+            const btcProfit = ((currentPrices.btc - portfolio.btc.buyPrice) / portfolio.btc.buyPrice * 100).toFixed(2);
             const btcProfitCzk = (btcValue - btcBuyValue).toFixed(0);
 
-            // ETH
-            const ethValue = portfolio.eth.amount * portfolio.eth.currentPrice * EXCHANGE_RATE;
+            const ethValue = portfolio.eth.amount * currentPrices.eth * EXCHANGE_RATE;
             const ethBuyValue = portfolio.eth.amount * portfolio.eth.buyPrice * EXCHANGE_RATE;
-            const ethProfit = ((portfolio.eth.currentPrice - portfolio.eth.buyPrice) / portfolio.eth.buyPrice * 100).toFixed(2);
+            const ethProfit = ((currentPrices.eth - portfolio.eth.buyPrice) / portfolio.eth.buyPrice * 100).toFixed(2);
             const ethProfitCzk = (ethValue - ethBuyValue).toFixed(0);
 
-            // Total
             const totalValue = btcValue + ethValue;
             const totalBuyValue = btcBuyValue + ethBuyValue;
             const totalProfit = ((totalValue - totalBuyValue) / totalBuyValue * 100).toFixed(2);
             const totalProfitCzk = (totalValue - totalBuyValue).toFixed(0);
 
-            // Update DOM
             document.getElementById('btcValue').textContent = btcValue.toFixed(0) + ' Kč';
             document.getElementById('btcProfit').textContent = (btcProfit >= 0 ? '+' : '') + btcProfit + '%';
             document.getElementById('btcProfit').className = btcProfit >= 0 ? 'text-2xl font-bold text-green-400' : 'text-2xl font-bold text-red-400';
@@ -271,50 +355,14 @@
             document.getElementById('totalProfitCzk').textContent = (totalProfitCzk >= 0 ? '+' : '') + totalProfitCzk + ' Kč';
         }
 
-        // ETH/BTC ratio
-        function updateEthBtcRatio() {
-            const ratio = (portfolio.eth.currentPrice / portfolio.btc.currentPrice).toFixed(4);
-            document.getElementById('ethBtcRatio').textContent = ratio;
+        async function init() {
+            document.getElementById('updateTime').textContent = new Date().toLocaleString('cs-CZ');
+            await Promise.all([fetchFearGreed(), fetchPrices()]);
+            document.getElementById('statusBadge').textContent = '✅ Live';
+            document.getElementById('statusBadge').className = '';
         }
 
-        // Fear & Greed aktualizace
-        function updateFearGreed(value) {
-            let label, desc, color;
-            if (value <= 25) {
-                label = 'Extrémní strach';
-                desc = 'Ideální čas nakupovat! Všichni panikáří.';
-                color = 'text-red-400';
-            } else if (value <= 45) {
-                label = 'Strach';
-                desc = 'Dobrá příležitost. Trh pesimistický.';
-                color = 'text-orange-400';
-            } else if (value <= 55) {
-                label = 'Neutrál';
-                desc = 'Vyčkávej. Žádný jasný signál.';
-                color = 'text-yellow-400';
-            } else if (value <= 75) {
-                label = 'Chamtivost';
-                desc = 'Drž pozice, neriskuj nové nákupy.';
-                color = 'text-green-400';
-            } else {
-                label = 'Extrémní chamtivost';
-                desc = 'POZOR! Připrav se realizovat zisky!';
-                color = 'text-green-500';
-            }
-            
-            document.getElementById('fearLabel').textContent = label;
-            document.getElementById('fearLabel').className = 'text-2xl font-semibold mb-2 ' + color;
-            document.getElementById('fearDesc').textContent = desc;
-        }
-
-        // Inicializace
-        calculateProfits();
-        updateEthBtcRatio();
-        updateFearGreed(71);
-
-        // Info pro uživatele
-        console.log('📊 makdb v1.0.0 loaded!');
-        console.log('🐝 Pro aktualizaci cen upravte portfolio.btc.currentPrice a portfolio.eth.currentPrice v konzoli');
+        init();
     </script>
 </body>
 </html>
